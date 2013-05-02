@@ -1,0 +1,11 @@
+﻿<Application x:Class="PiDu.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PiDu"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <local:Library x:Key="library"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
