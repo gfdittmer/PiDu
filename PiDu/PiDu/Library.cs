@@ -18,12 +18,12 @@ namespace PiDu
         object albumLock = new object();
         object songLock = new object();
 
-        public async Task Load()
+        public void Load()
         {
-            await Load(@"C:\Users\Vivek\Music");
+            Load(@"C:\Users\Vivek\Music");
         }
 
-        public async Task Load(string startingDirectory)
+        public void Load(string startingDirectory)
         {
             Albums = new ObservableCollection<Album>();
             Songs = new ObservableCollection<Song>();
@@ -34,7 +34,6 @@ namespace PiDu
             //Parallel.ForEach<string>(musicFiles, musicFile =>
             foreach(string musicFile in musicFiles)
             {
-                System.Console.WriteLine("About to scan: " + musicFile);
                 TagLib.File fileInfo = null;
                 try
                 {
@@ -48,7 +47,7 @@ namespace PiDu
                 catch(Exception exn){
                     System.Console.WriteLine("QWE:" + exn.Message.ToString());
                 }
-                System.Console.WriteLine("Scanned: " + musicFile);
+
                 if (fileInfo != null)
                 {
 
@@ -79,28 +78,28 @@ namespace PiDu
                         album.Artist = albumArtists;
                         album.Title = albumName;
 
-                        lock (albumLock)
-                        {
+                        //lock (albumLock)
+                        //{
                             this.Albums.Add(album);
-                        }
+                        //}
                     }
 
                     track.Album = album;
 
-                    lock (album)
-                    {
+                    //lock (album)
+                    //{
                         if (album.Songs == null)
                         {
                             album.Songs = new ObservableCollection<Song>();
                         }
 
                         album.Songs.Add(track);
-                    }
+                    //}
 
-                    lock (songLock)
-                    {
+                    //lock (songLock)
+                    //{
                         this.Songs.Add(track);
-                    }
+                    //}
                 }
                 else
                 {

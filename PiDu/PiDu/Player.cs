@@ -28,15 +28,26 @@ namespace PiDu
         {
             try
             {
-                this._currentlyPlayingSound = this._engine.Play2D(song.FileLocation);
+                this.Stop();
+                this._currentlyPlayingSound = this._engine.Play2D(song.FileLocation, true);
+
+                System.Console.WriteLine("Playing: " + song.FileLocation);
+
+                if (this._currentlyPlayingSound == null)
+                {
+                    throw new ArgumentException("Unable to play song");
+                }
+
 
                 this._playUpdater.Start();
 
-                return this._currentlyPlayingSound.PlayLength;
+                return 0;// this._currentlyPlayingSound.PlayLength;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //TODO: do something with this
+                System.Console.WriteLine(e.ToString());
+                return 0;
             }
             return 0;
         }

@@ -76,6 +76,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Playlist.cs" />
     <Compile Include="Song.cs" />
+    <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -126,6 +127,15 @@
     <Resource Include="Images\INACTIVESHADOWLEFT.png" />
     <Resource Include="Images\INACTIVESHADOWRIGHT.png" />
     <Resource Include="Images\INACTIVESHADOWTOP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\ikpFlac.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\ikpMP3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\irrKlang.NET4.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

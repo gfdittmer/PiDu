@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,15 +41,18 @@ namespace PiDu
         private HwndSource m_hwndSource;
         private DateTime m_headerLastClicked;
 
+        private ViewModel viewModel;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+
+            
         }
 
-        private Library library;
         /// <summary>
         /// Raises the <see cref="E:System.Windows.FrameworkElement.Initialized"/> event. 
         /// This method is invoked whenever 
@@ -79,11 +83,30 @@ namespace PiDu
 
             base.OnInitialized(e);
 
-            library = (Library)App.Current.Resources["library"];
-            library.Load();
+            viewModel = (ViewModel)App.Current.Resources["viewmodel"];
+            viewModel = new ViewModel();
+            this.DataContext = viewModel;
+
+            TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            CancellationToken cancelationToken = new CancellationToken();
+
+            Task.Factory.StartNew(() => viewModel.Library.Load()).ContinueWith(w =>
+            {
+                this.albumGrid.ItemsSource = viewModel.Library.Albums; 
+            }, cancelationToken, TaskContinuationOptions.None, scheduler);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:System.Windows.Window.Closed"/> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnClosed(EventArgs e)
+        {
+            CloseSurrounds();
+            base.OnClosed(e);
+        }
 
+        #region Window Decorations
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Window.SourceInitialized"/> event.
         /// </summary>
@@ -104,15 +127,7 @@ namespace PiDu
         }
 
 
-        /// <summary>
-        /// Raises the <see cref="E:System.Windows.Window.Closed"/> event.
-        /// </summary>
-        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
-        protected override void OnClosed(EventArgs e)
-        {
-            CloseSurrounds();
-            base.OnClosed(e);
-        }
+        
 
 
         /// <summary>
@@ -218,16 +233,16 @@ namespace PiDu
 
 
                 m_wndT.Content = GetDecorator("Images/ACTIVESHADOWTOP.PNG");
-                m_wndL.Content = GetDecorator("Images/ACTIVESHADOWLEFT.PNG", cornerRadius);
+                //m_wndL.Content = GetDecorator("Images/ACTIVESHADOWLEFT.PNG", cornerRadius);
                 m_wndB.Content = GetDecorator("Images/ACTIVESHADOWBOTTOM.PNG");
-                m_wndR.Content = GetDecorator("Images/ACTIVESHADOWRIGHT.PNG", cornerRadius);
+                //m_wndR.Content = GetDecorator("Images/ACTIVESHADOWRIGHT.PNG", cornerRadius);
             }
             else
             {
                 m_wndT.Content = GetDecorator("Images/INACTIVESHADOWTOP.PNG");
-                m_wndL.Content = GetDecorator("Images/INACTIVESHADOWLEFT.PNG");
+                //m_wndL.Content = GetDecorator("Images/INACTIVESHADOWLEFT.PNG");
                 m_wndB.Content = GetDecorator("Images/INACTIVESHADOWBOTTOM.PNG");
-                m_wndR.Content = GetDecorator("Images/INACTIVESHADOWRIGHT.PNG");
+                //m_wndR.Content = GetDecorator("Images/INACTIVESHADOWRIGHT.PNG");
             }
         }
 
@@ -669,6 +684,11 @@ namespace PiDu
                 public POINT m_ptMaxTrackSize;
             };
         }
+        #endregion
 
+        private void AlbumArt_Click(object sender, RoutedEventArgs e)
+        {
+            //MessageBox.Show("You clicked:" + () this.albumGrid.ContainerFromElement((Button)sender).
+        }
     }   
 }

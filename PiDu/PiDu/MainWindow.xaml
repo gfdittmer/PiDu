@@ -4,48 +4,87 @@
         Title="MainWindow" Height="350" Width="525" WindowStyle="None" ResizeMode="NoResize"
         PreviewMouseMove="HandlePreviewMouseMove">
     <Grid>
-        <Grid
-            Background="Black">
-            <Rectangle
-                Height="28"
-                VerticalAlignment="Top"
-                Fill="Orange"
+        <Grid.Resources>
+            <Style TargetType="Grid" x:Key="ContentBackground">
+                <Setter Property="Background" Value="Gray"/>
+            </Style>
+            <Style TargetType="Rectangle" x:Key="NowPlayingHeader">
+                <Setter Property="Fill">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0 0" EndPoint="0 1">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Color="White" Offset="0"/>
+                                <GradientStop Color="LightGray" Offset="1"/>
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Height" Value="80"/>
+            </Style>
+            <Style TargetType="Border" x:Key="Border">
+                <Setter Property="BorderBrush"  Value="Orange"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="WindowButtonStyle">
+                <Setter Property="FontFamily" Value="Webdings"/>
+                <Setter Property="Foreground" Value="#FF919191"/>
+                <Setter Property="FontSize" Value="13.333"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+        </Grid.Resources>
+        
+        <Grid Style="{StaticResource ContentBackground}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Rectangle Style="{StaticResource NowPlayingHeader}"
                 PreviewMouseDown="HandleHeaderPreviewMouseDown" />
+                <ItemsControl x:Name="albumGrid" Grid.Row="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Width="100" Height="100" Background="Lavender" Click="AlbumArt_Click" 
+                                    Command="{Binding DataContext.Select, RelativeSource=
+      {RelativeSource FindAncestor, AncestorType=Window}}" 
+                                    CommandParameter="{Binding}">
+                                <Button.Content>
+                                    <TextBlock Text="{Binding Title}"/>
+                                </Button.Content>                               
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
             <Button
                 HorizontalAlignment="Right"
                 Margin="500,6,45,0"
                 VerticalAlignment="Top"
                 Click="HandleMinimizeClick">
-                <TextBlock
-                    TextWrapping="Wrap"
-                    Text="0"
-                    FontFamily="Webdings"
-                    Foreground="#FF919191"
-                    FontSize="13.333" />
+                <TextBlock Style="{StaticResource WindowButtonStyle}"
+                    Text="0" />
             </Button>
             <Button
                 HorizontalAlignment="Right"
                 Margin="500,6,26,0"
                 VerticalAlignment="Top"
                 Click="HandleRestoreClick">
-                <TextBlock
-                    TextWrapping="Wrap"
-                    Text="1"
-                    FontFamily="Webdings"
-                    Foreground="#FF919191"
-                    FontSize="13.333" />
+                <TextBlock Style="{StaticResource WindowButtonStyle}"
+                    Text="1"/>
             </Button>
             <Button
                 HorizontalAlignment="Right"
                 Margin="500,6,8,0"
                 VerticalAlignment="Top"
                 Click="HandleCloseClick">
-                <TextBlock
-                    TextWrapping="Wrap"
-                    Text="r"
-                    FontFamily="Webdings"
-                    Foreground="#FF919191"
-                    FontSize="13.333" />
+                <TextBlock Style="{StaticResource WindowButtonStyle}"
+                    Text="r"/>
             </Button>
         </Grid>
         <Grid
@@ -54,8 +93,7 @@
             <Border
                 x:Name="m_roundBorder"
                 x:FieldModifier="private"
-                BorderThickness="1"
-                BorderBrush="Orange"
+                Style="{StaticResource Border}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch" />
             <Rectangle
@@ -160,7 +198,9 @@
                     </TransformGroup>
                 </Path.RenderTransform>
             </Path>
+            
         </Grid>
+        
     </Grid>
 
 </Window>

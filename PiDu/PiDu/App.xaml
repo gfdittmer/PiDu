@@ -5,7 +5,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <local:Library x:Key="library"/>
+            <local:ViewModel x:Key="viewmodel"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
