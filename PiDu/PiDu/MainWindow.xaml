@@ -25,11 +25,17 @@
                 <Setter Property="BorderBrush"  Value="Orange"/>
                 <Setter Property="BorderThickness" Value="1"/>
             </Style>
-            <Style TargetType="TextBlock" x:Key="WindowButtonStyle">
-                <Setter Property="FontFamily" Value="Webdings"/>
-                <Setter Property="Foreground" Value="#FF919191"/>
-                <Setter Property="FontSize" Value="13.333"/>
-                <Setter Property="TextWrapping" Value="Wrap"/>
+            <Style TargetType="Button" x:Key="WindowButtonStyle">
+                <Style.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="Webdings"/>
+                        <Setter Property="Foreground" Value="#FF919191"/>
+                        <Setter Property="FontSize" Value="13.333"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                    </Style>
+                </Style.Resources>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderThickness" Value="0"/>
             </Style>
             <Style TargetType="StackPanel" x:Key="NowPlayingControls">
                 <Style.Resources>
@@ -104,7 +110,7 @@
                 <Grid Grid.Row="1" Style="{StaticResource Playlist}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="15"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="ARTISTS > MUSE > BLACK HOLES + REVELATIONS"/>
@@ -116,29 +122,26 @@
                 <!-- End playlist area -->
                 
             </Grid>
-            <Button
+            <Button Style="{StaticResource WindowButtonStyle}"
                 HorizontalAlignment="Right"
                 Margin="500,6,45,0"
                 VerticalAlignment="Top"
                 Click="HandleMinimizeClick">
-                <TextBlock Style="{StaticResource WindowButtonStyle}"
-                    Text="0" />
+                <TextBlock Text="0" />
             </Button>
-            <Button
+            <Button Style="{StaticResource WindowButtonStyle}"
                 HorizontalAlignment="Right"
                 Margin="500,6,26,0"
                 VerticalAlignment="Top"
                 Click="HandleRestoreClick">
-                <TextBlock Style="{StaticResource WindowButtonStyle}"
-                    Text="1"/>
+                <TextBlock Text="1"/>
             </Button>
-            <Button
+            <Button Style="{StaticResource WindowButtonStyle}"
                 HorizontalAlignment="Right"
                 Margin="500,6,8,0"
                 VerticalAlignment="Top"
                 Click="HandleCloseClick">
-                <TextBlock Style="{StaticResource WindowButtonStyle}"
-                    Text="r"/>
+                <TextBlock Text="r"/>
             </Button>
         </Grid>
         <Grid

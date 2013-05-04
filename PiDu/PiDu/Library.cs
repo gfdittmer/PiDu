@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TagLib;
 using System.IO;
 using System.Collections.Specialized;
+using System.Windows;
 
 namespace PiDu
 {
@@ -27,7 +28,7 @@ namespace PiDu
 
         public void Load()
         {
-            Load(@"C:\Users\Vivek\Music");
+            Load(PiDu.Properties.Settings.Default.MusicRootDirectory);
         }
 
         public void Load(string startingDirectory)
