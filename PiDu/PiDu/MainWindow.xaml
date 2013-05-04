@@ -45,7 +45,7 @@
                 </Style.Resources>
             </Style>
             <Style TargetType="Grid" x:Key="Playlist">
-                <Setter Property="Width" Value="300"/>
+                <Setter Property="Width" Value="400"/>
                 <Setter Property="Height" Value="250"/>
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="VerticalAlignment" Value="Bottom"/>
@@ -59,6 +59,7 @@
                     <Style TargetType="ListBox">
                         <Setter Property="Background" Value="Black"/>
                         <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Foreground" Value="White"/>
                     </Style>
                 </Style.Resources>
             </Style>
@@ -77,37 +78,36 @@
                 <StackPanel Orientation="Horizontal" Style="{StaticResource NowPlayingControls}">
                     <Button Content="Loop"/>
                     <Button Content="Rew"/>
-                    <Button Content="Play"/>
+                    <Button Content="Play" Command="{Binding PlayPauseSong}"/>
                     <Button Content="FF"/>
                     <Button Content="Shuf"/>
                 </StackPanel>
                 
                 <!-- Begin album grid area -->
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                    <ItemsControl x:Name="albumGrid" ItemsSource="{Binding FilteredAlbums}">
-                        <ItemsControl.ItemsPanel>
+                <!--<ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">-->
+                    <ListView x:Name="albumGrid" ItemsSource="{Binding FilteredAlbums}"
+                              IsSynchronizedWithCurrentItem="True"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              Grid.Row="1">
+                    <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Button Width="100" Height="100" Background="Lavender" Click="AlbumArt_Click" 
-                                    Command="{Binding DataContext.SelectAlbum, RelativeSource=
-      {RelativeSource FindAncestor, AncestorType=Window}}" 
-                                    CommandParameter="{Binding}">
-                                    <Button.Content>
-                                        <TextBlock Text="{Binding Title}"/>
-                                    </Button.Content>
-                                </Button>
+                                <Canvas Width="100" Height="100" ClipToBounds="True">
+                                    <Rectangle Width="100" Height="100" Fill="Lavender"/>
+                                    <TextBlock Text="{Binding Title}"/>
+                                </Canvas>
                             </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
+                        </ListView.ItemTemplate>
+                    </ListView>
+               <!-- </ScrollViewer>-->
                 <!-- End album grid area -->
                 
                 <!-- Begin playlist area -->
-                <Grid Grid.Row="1" Style="{StaticResource Playlist}">
+                <Grid Grid.Row="1" Style="{StaticResource Playlist}" DataContext="{Binding CurrentAlbum}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
                         <RowDefinition Height="15"/>
@@ -115,8 +115,13 @@
                     </Grid.RowDefinitions>
                     <TextBlock Text="ARTISTS > MUSE > BLACK HOLES + REVELATIONS"/>
                     <TextBlock Text="Alternative Rock | 3 July 2006" Grid.Row="1"/>
-                    <ListBox Grid.Row="2">
-                        
+                    <ListBox Grid.Row="2" ItemsSource="{Binding Songs}" x:Name="Playlist"
+MouseDoubleClick="ListBoxItem_MouseDoubleClick">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
                 <!-- End playlist area -->

@@ -695,9 +695,16 @@ namespace PiDu
         }
         #endregion
 
-        private void AlbumArt_Click(object sender, RoutedEventArgs e)
+        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //MessageBox.Show("You clicked:" + () this.albumGrid.ContainerFromElement((Button)sender).
+            if (((ViewModel)this.DataContext).PlaySong != null)
+            {
+                if (((ListBox)sender).SelectedItem != null)
+                {
+                    ((ViewModel)this.DataContext).PlaySong.Execute((Song)(((ListBox)sender).SelectedItem));
+                }
+
+            }
         }
     }   
 }
