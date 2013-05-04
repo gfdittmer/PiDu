@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using TagLib;
 using System.IO;
+using System.Collections.Specialized;
 
 namespace PiDu
 {
@@ -18,6 +19,12 @@ namespace PiDu
         object albumLock = new object();
         object songLock = new object();
 
+        public Library()
+        {
+            Albums = new ObservableCollection<Album>();
+            Songs = new ObservableCollection<Song>();
+        }
+
         public void Load()
         {
             Load(@"C:\Users\Vivek\Music");
@@ -25,9 +32,9 @@ namespace PiDu
 
         public void Load(string startingDirectory)
         {
-            Albums = new ObservableCollection<Album>();
-            Songs = new ObservableCollection<Song>();
-            
+            Albums.Clear();
+            Songs.Clear();
+
             List<string> musicFiles = Directory.EnumerateFiles(startingDirectory, "*.mp3", SearchOption.AllDirectories).ToList();
             System.Console.WriteLine(String.Format("Loading {0} files", musicFiles.Count()));
             
@@ -45,7 +52,7 @@ namespace PiDu
                     fileInfo = TagLib.File.Create(musicFile);
                 }
                 catch(Exception exn){
-                    System.Console.WriteLine("QWE:" + exn.Message.ToString());
+                    //System.Console.WriteLine("QWE:" + exn.Message.ToString());
                 }
 
                 if (fileInfo != null)
@@ -103,10 +110,14 @@ namespace PiDu
                 }
                 else
                 {
-                    System.Console.WriteLine("Could not load metadata for file: " + musicFile);
+                    //System.Console.WriteLine("Could not load metadata for file: " + musicFile);
                 }
             }//);
 
+            if (this.LibraryUpdated != null)
+            {
+                this.LibraryUpdated(this, new EventArgs());
+            }
             
         }
 
@@ -133,5 +144,7 @@ namespace PiDu
             System.Console.WriteLine("Returning file: " + file);
             return fileInfo;
         }
+
+        public event EventHandler LibraryUpdated;
     }
 }

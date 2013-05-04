@@ -1,25 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace PiDu
 {
-    public class ViewModel
+    public class ViewModel:INotifyPropertyChanged
     {
-        public ViewModel()
+        private Library _library;
+        private Player _player;
+        private Dispatcher _dispatcher;
+
+        private ObservableCollection<Album> _albums;
+
+        public ViewModel(Dispatcher dispatcher)
         {
-            Library = new Library();
-            Player = new Player();
-            Select = new AlbumSelectCommand();
+            this._dispatcher = dispatcher;
+
+            _albums = new ObservableCollection<Album>();
+            
+            FilteredAlbums = new ListCollectionView(_albums);
+
+            _library = new Library();
+            _library.LibraryUpdated += _library_LibraryUpdated;
+            Task.Run(()=> _library.Load());
+
+            _player = new Player();
+
+            
+            SelectAlbum = new AlbumSelectCommand();
         }
 
-        public Library Library { get; set; }
-        public Player Player { get; set; }
+        void _library_LibraryUpdated(object sender, EventArgs e)
+        {
+            Console.WriteLine("Library updated. Updating viewmodel data.");
 
-        public ICommand Select { get; set; }
+            Application.Current.Dispatcher.InvokeAsync(new Action(()=>
+            {
+                foreach (Album album in _library.Albums.OrderBy(x=>x.Title))
+                {
+                    if (!_albums.Contains(album))
+                    {
+                        _albums.Add(album);
+                    }
+                }
+                Console.WriteLine("Updated viewmodel data.");
+            }));
+        }
+
+
+
+        public ICollectionView FilteredAlbums { get; private set; }
+
+        public ICommand SelectAlbum { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     public class AlbumSelectCommand : ICommand

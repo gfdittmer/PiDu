@@ -31,6 +31,31 @@
                 <Setter Property="FontSize" Value="13.333"/>
                 <Setter Property="TextWrapping" Value="Wrap"/>
             </Style>
+            <Style TargetType="StackPanel" x:Key="NowPlayingControls">
+                <Style.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Height" Value="40"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+            <Style TargetType="Grid" x:Key="Playlist">
+                <Setter Property="Width" Value="300"/>
+                <Setter Property="Height" Value="250"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                <Setter Property="Margin" Value="15 0 0 15"/>
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Opacity" Value="0.7"/>
+                <Style.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>
+                    <Style TargetType="ListBox">
+                        <Setter Property="Background" Value="Black"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
         </Grid.Resources>
         
         <Grid Style="{StaticResource ContentBackground}">
@@ -42,25 +67,54 @@
 
                 <Rectangle Style="{StaticResource NowPlayingHeader}"
                 PreviewMouseDown="HandleHeaderPreviewMouseDown" />
-                <ItemsControl x:Name="albumGrid" Grid.Row="1">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button Width="100" Height="100" Background="Lavender" Click="AlbumArt_Click" 
-                                    Command="{Binding DataContext.Select, RelativeSource=
+
+                <StackPanel Orientation="Horizontal" Style="{StaticResource NowPlayingControls}">
+                    <Button Content="Loop"/>
+                    <Button Content="Rew"/>
+                    <Button Content="Play"/>
+                    <Button Content="FF"/>
+                    <Button Content="Shuf"/>
+                </StackPanel>
+                
+                <!-- Begin album grid area -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                    <ItemsControl x:Name="albumGrid" ItemsSource="{Binding FilteredAlbums}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Width="100" Height="100" Background="Lavender" Click="AlbumArt_Click" 
+                                    Command="{Binding DataContext.SelectAlbum, RelativeSource=
       {RelativeSource FindAncestor, AncestorType=Window}}" 
                                     CommandParameter="{Binding}">
-                                <Button.Content>
-                                    <TextBlock Text="{Binding Title}"/>
-                                </Button.Content>                               
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                    <Button.Content>
+                                        <TextBlock Text="{Binding Title}"/>
+                                    </Button.Content>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <!-- End album grid area -->
+                
+                <!-- Begin playlist area -->
+                <Grid Grid.Row="1" Style="{StaticResource Playlist}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="ARTISTS > MUSE > BLACK HOLES + REVELATIONS"/>
+                    <TextBlock Text="Alternative Rock | 3 July 2006" Grid.Row="1"/>
+                    <ListBox Grid.Row="2">
+                        
+                    </ListBox>
+                </Grid>
+                <!-- End playlist area -->
+                
             </Grid>
             <Button
                 HorizontalAlignment="Right"

@@ -83,17 +83,26 @@ namespace PiDu
 
             base.OnInitialized(e);
 
-            viewModel = (ViewModel)App.Current.Resources["viewmodel"];
-            viewModel = new ViewModel();
+            //viewModel = (ViewModel)App.Current.Resources["viewmodel"];
+            viewModel = new ViewModel(this.Dispatcher);
+
+            //TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            //CancellationToken cancelationToken = new CancellationToken();
+
+            //Task.Factory.StartNew(() => viewModel = new ViewModel(this.Dispatcher)).ContinueWith(w =>
+            //{
+            //    //this.albumGrid.ItemsSource = viewModel.Library.Albums; 
+            //}, cancelationToken, TaskContinuationOptions.None, scheduler);
+
+            
+            
             this.DataContext = viewModel;
+            
 
-            TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            CancellationToken cancelationToken = new CancellationToken();
-
-            Task.Factory.StartNew(() => viewModel.Library.Load()).ContinueWith(w =>
-            {
-                this.albumGrid.ItemsSource = viewModel.Library.Albums; 
-            }, cancelationToken, TaskContinuationOptions.None, scheduler);
+            //Task.Factory.StartNew(() => viewModel.Library.Load()).ContinueWith(w =>
+            //{
+            //    this.albumGrid.ItemsSource = viewModel.Library.Albums; 
+            //}, cancelationToken, TaskContinuationOptions.None, scheduler);
         }
 
         /// <summary>
