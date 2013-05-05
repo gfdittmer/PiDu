@@ -11,6 +11,7 @@ namespace PiDu
         public Album Album { get; set; }
 
         public string Name { get; set; }
+        public int TrackNumber { get; set; }
         public string FileLocation { get; set; }
     }
 }

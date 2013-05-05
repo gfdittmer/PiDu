@@ -57,8 +57,6 @@ namespace PiDu
 
         void _library_LibraryUpdated(object sender, EventArgs e)
         {
-            Console.WriteLine("Library updated. Updating viewmodel data.");
-
             Application.Current.Dispatcher.InvokeAsync(new Action(()=>
             {
                 foreach (Album album in _library.Albums.OrderBy(x=>x.Title))
@@ -68,14 +66,20 @@ namespace PiDu
                         _albums.Add(album);
                     }
                 }
-                Console.WriteLine("Updated viewmodel data.");
             }));
         }
 
 
         private void Play(Song song)
         {
-            _player.Play(song, false);
+            if(_player.Play(song, false) > 0){
+                CurrentSong = song;
+
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged(this, new PropertyChangedEventArgs("CurrentSong"));
+                }
+            }
         }
 
         private void PlayPause()
@@ -92,6 +96,7 @@ namespace PiDu
 
         public ICollectionView FilteredAlbums { get; private set; }
         public Album CurrentAlbum { get; private set; }
+        public Song CurrentSong { get; private set; }
 
         public ICommand SelectAlbum { get; set; }
         public ICommand PlaySong { get; set; }

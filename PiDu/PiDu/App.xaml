@@ -4,8 +4,6 @@
              xmlns:local="clr-namespace:PiDu"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary>
-            <local:ViewModel x:Key="viewmodel"/>
-        </ResourceDictionary>
+
     </Application.Resources>
 </Application>

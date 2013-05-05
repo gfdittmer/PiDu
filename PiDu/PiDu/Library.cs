@@ -64,6 +64,7 @@ namespace PiDu
 
                     track.FileLocation = fileInfo.Name;
                     track.Name = fileInfo.Tag.Title;
+                    track.TrackNumber = (int)fileInfo.Tag.Track;
 
                     string albumName = fileInfo.Name;
                     string albumArtists = "";
