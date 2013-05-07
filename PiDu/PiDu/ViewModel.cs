@@ -21,10 +21,8 @@ namespace PiDu
 
         private ObservableCollection<Album> _albums;
 
-        public ViewModel(Dispatcher dispatcher)
+        public ViewModel()
         {
-            this._dispatcher = dispatcher;
-
             _albums = new ObservableCollection<Album>();
             
             FilteredAlbums = new ListCollectionView(_albums);
@@ -34,25 +32,52 @@ namespace PiDu
             _library.LibraryUpdated += _library_LibraryUpdated;
             Task.Run(()=> _library.Load());
 
+            Playlist = new PiDu.Playlist();
+            Playlist.NewList += Playlist_NewList;
+            Playlist.CurrentSongChanged += Playlist_CurrentSongChanged;
+
             _player = new Player();
+            _player.PlayFinished += _player_PlayFinished;
 
             
             SelectAlbum = new AlbumSelectCommand();
+            PlayAlbum = new DelegateCommand<Album>(this.Play);
             PlaySong = new DelegateCommand<Song>(this.Play);
             PlayPauseSong = new DelegateCommand(this.PlayPause);
+            ToggleLoop = new DelegateCommand(this.Loop);
+
+            IsLooped = false;
+        }
+
+
+
+        void Playlist_CurrentSongChanged(object sender, EventArgs e)
+        {
+            this.StartPlay(Playlist.Current);
+        }
+
+        void _player_PlayFinished(object sender, EventArgs e)
+        {
+            if (Playlist.HasNext)
+            {
+                Playlist.Next();
+            }
+        }
+
+        void Playlist_NewList(object sender, EventArgs e)
+        {
+            this.StartPlay(Playlist.Current);
         }
 
         void FilteredAlbums_CurrentChanged(object sender, EventArgs e)
         {
-            CurrentAlbum = FilteredAlbums.CurrentItem as Album;
-            if (CurrentAlbum != null)
+            SelectedAlbum = FilteredAlbums.CurrentItem as Album;
+            if (SelectedAlbum != null)
             {
-                Console.WriteLine("Selected: " + CurrentAlbum.Title);
+                Console.WriteLine("Selected: " + SelectedAlbum.Title);
             }
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs("CurrentAlbum"));
-            }
+            this.RaisePropertyChanged("SelectedAlbum");
+            
         }
 
         void _library_LibraryUpdated(object sender, EventArgs e)
@@ -69,18 +94,25 @@ namespace PiDu
             }));
         }
 
+        private void Play(Album album)
+        {
+            Playlist.PlaySongs(album.Songs.ToList());
+        }
 
         private void Play(Song song)
         {
-            if(_player.Play(song, false) > 0){
-                CurrentSong = song;
+            Playlist.PlaySongs(song.Album.Songs.ToList());
+        }
 
-                if (this.PropertyChanged != null)
-                {
-                    this.PropertyChanged(this, new PropertyChangedEventArgs("CurrentSong"));
-                }
+        private void StartPlay(Song song)
+        {
+            if (_player.Play(song, IsLooped) > 0)
+            {
+                this.RaisePropertyChanged("CurrentSong");
             }
         }
+
+        
 
         private void PlayPause()
         {
@@ -90,20 +122,47 @@ namespace PiDu
             }
             else
             {
-                _player.Resume(false);
+                _player.Resume(IsLooped);
             }
         }
 
+        
+
+        private void Loop()
+        {
+            IsLooped = !IsLooped;
+
+            this.RaisePropertyChanged("IsLooped");
+        }
+
+        public bool IsLooped { get; set; }
+
         public ICollectionView FilteredAlbums { get; private set; }
-        public Album CurrentAlbum { get; private set; }
+        public Album SelectedAlbum { get; private set; }
+
         public Song CurrentSong { get; private set; }
 
+        public Playlist Playlist { get; private set; }
+
         public ICommand SelectAlbum { get; set; }
+        public ICommand PlayAlbum { get; set; }
         public ICommand PlaySong { get; set; }
         public ICommand PlayPauseSong { get; set; }
+        public ICommand ToggleLoop { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+
+        public void RaisePropertyChanged(string property)
+        {
+            if (this.PropertyChanged != null)
+            {
+                this.PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
     }
+
+
 
     public class AlbumSelectCommand : ICommand
     {

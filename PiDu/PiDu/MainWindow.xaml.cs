@@ -83,26 +83,9 @@ namespace PiDu
 
             base.OnInitialized(e);
 
-            //viewModel = (ViewModel)App.Current.Resources["viewmodel"];
-            viewModel = new ViewModel(this.Dispatcher);
+            viewModel = new ViewModel();
 
-            //TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            //CancellationToken cancelationToken = new CancellationToken();
-
-            //Task.Factory.StartNew(() => viewModel = new ViewModel(this.Dispatcher)).ContinueWith(w =>
-            //{
-            //    //this.albumGrid.ItemsSource = viewModel.Library.Albums; 
-            //}, cancelationToken, TaskContinuationOptions.None, scheduler);
-
-            
-            
             this.DataContext = viewModel;
-            
-
-            //Task.Factory.StartNew(() => viewModel.Library.Load()).ContinueWith(w =>
-            //{
-            //    this.albumGrid.ItemsSource = viewModel.Library.Albums; 
-            //}, cancelationToken, TaskContinuationOptions.None, scheduler);
         }
 
         /// <summary>
@@ -701,9 +684,20 @@ namespace PiDu
             {
                 if (((ListBox)sender).SelectedItem != null)
                 {
-                    ((ViewModel)this.DataContext).PlaySong.Execute((Song)(((ListBox)sender).SelectedItem));
+                    ((ViewModel)this.DataContext).PlaySong.Execute((Song)(((ListBox)sender).SelectedItem)); //TODO: don't do this...
                 }
 
+            }
+        }
+
+        private void HandleDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(((ViewModel)this.DataContext).PlayAlbum != null){
+                if(((ListViewItem)sender).Content as Album != null){
+
+                    ((ViewModel)this.DataContext).PlayAlbum.Execute((Album)(((ListViewItem)sender).Content as Album));
+
+                }
             }
         }
     }   

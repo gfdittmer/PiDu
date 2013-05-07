@@ -59,13 +59,15 @@ namespace PiDu
                 this.CurrentPlayPosition(this, (int)this._currentlyPlayingSound.PlayPosition);
             }
 
-            if (this.PlayFinished != null && HasSoundFile)
+            if (this._currentlyPlayingSound != null && this._currentlyPlayingSound.Finished && 
+                this.PlayFinished != null)
             {
                 this.PlayFinished(this, new EventArgs());
+                this._playUpdater.Stop();
             }
         }
 
-        public void PanTo(uint pos)
+        public void Seek(uint pos)
         {
             if (HasSoundFile)
             {
