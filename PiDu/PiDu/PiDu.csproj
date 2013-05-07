@@ -103,6 +103,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoolToVisibilityConverter.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="MusicDataProvider.cs" />
     <Compile Include="Player.cs" />

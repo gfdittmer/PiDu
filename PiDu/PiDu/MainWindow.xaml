@@ -1,11 +1,13 @@
 ﻿<Window x:Class="PiDu.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pidu="clr-namespace:PiDu"
         Title="MainWindow" Height="350" Width="525" WindowStyle="None" ResizeMode="NoResize"
         UseLayoutRounding="True"
         PreviewMouseMove="HandlePreviewMouseMove">
     <Grid>
         <Grid.Resources>
+            <pidu:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <Style TargetType="Grid" x:Key="ContentBackground">
                 <Setter Property="Background" Value="Gray"/>
             </Style>
@@ -109,6 +111,7 @@
             </Style>
             
             <CollectionViewSource Source="{Binding SelectedAlbum.Songs}" x:Key="songView" />
+            <CollectionViewSource Source="{Binding CurrentSong.Album.Songs}" x:Key="currentSongView" />
         </Grid.Resources>
         
         <Grid Style="{StaticResource ContentBackground}">
@@ -203,7 +206,7 @@
                 <!-- End album grid area -->
                 
                 <!-- Begin playlist area -->
-                <Grid Grid.Row="1" Style="{StaticResource Playlist}" DataContext="{Binding SelectedAlbum}">
+                <Grid Grid.Row="1" Style="{StaticResource Playlist}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
                         <RowDefinition Height="15"/>
@@ -212,8 +215,25 @@
                     <TextBlock Text="ARTISTS > MUSE > BLACK HOLES + REVELATIONS"/>
                     <TextBlock Text="Alternative Rock | 3 July 2006" Grid.Row="1"/>
 
-                    <ListBox Grid.Row="2" ItemsSource="{Binding Source={StaticResource songView}}" x:Name="Playlist"
-                        MouseDoubleClick="ListBoxItem_MouseDoubleClick">
+                    <ListBox Grid.Row="2" DataContext="{Binding SelectedAlbum}" 
+                             ItemsSource="{Binding Source={StaticResource songView}}" 
+                             Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window},
+                                            Path=DataContext.CurrentPlaylistShowing,
+                                            Converter={StaticResource BoolToVisibilityConverter}, 
+                                            ConverterParameter=false}"
+                             MouseDoubleClick="ListBoxItem_MouseDoubleClick">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox Grid.Row="2" DataContext="{Binding CurrentSong.Album}" 
+                             ItemsSource="{Binding Source={StaticResource currentSongView}}" 
+                             Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window},
+                                            Path=DataContext.CurrentPlaylistShowing,
+                                            Converter={StaticResource BoolToVisibilityConverter}}"
+                             MouseDoubleClick="ListBoxItem_MouseDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>

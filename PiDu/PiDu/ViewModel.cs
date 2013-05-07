@@ -17,7 +17,6 @@ namespace PiDu
     {
         private Library _library;
         private static Player _player;
-        private Dispatcher _dispatcher;
 
         private ObservableCollection<Album> _albums;
 
@@ -49,6 +48,7 @@ namespace PiDu
             IsLooped = false;
         }
 
+        public bool CurrentPlaylistShowing { get; set; }
 
 
         void Playlist_CurrentSongChanged(object sender, EventArgs e)
@@ -77,6 +77,8 @@ namespace PiDu
                 Console.WriteLine("Selected: " + SelectedAlbum.Title);
             }
             this.RaisePropertyChanged("SelectedAlbum");
+            CurrentPlaylistShowing = false;
+            this.RaisePropertyChanged("CurrentPlaylistShowing");
             
         }
 
@@ -97,17 +99,22 @@ namespace PiDu
         private void Play(Album album)
         {
             Playlist.PlaySongs(album.Songs.ToList());
+            CurrentPlaylistShowing = true;
+            this.RaisePropertyChanged("CurrentPlaylistShowing");
         }
 
         private void Play(Song song)
         {
             Playlist.PlaySongs(song.Album.Songs.ToList());
+            CurrentPlaylistShowing = true;
+            this.RaisePropertyChanged("CurrentPlaylistShowing");
         }
 
         private void StartPlay(Song song)
         {
             if (_player.Play(song, IsLooped) > 0)
             {
+                CurrentSong = song;
                 this.RaisePropertyChanged("CurrentSong");
             }
         }
