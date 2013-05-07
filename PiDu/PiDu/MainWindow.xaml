@@ -177,12 +177,13 @@
                 </Grid>
                 
                 
+                
                 <!-- Begin album grid area -->
                     <ListView x:Name="albumGrid" ItemsSource="{Binding FilteredAlbums}"
                               IsSynchronizedWithCurrentItem="True"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               Style="{StaticResource AlbumArt}"
-                              Grid.Row="1">
+                              Grid.Row="2">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" ItemWidth="100" ItemHeight="100"/>
@@ -242,7 +243,32 @@
                     </ListBox>
                 </Grid>
                 <!-- End playlist area -->
-                
+
+                <!--Begin sort bar-->
+
+                <Grid Grid.Row="1" Background="#414141" VerticalAlignment="Top" Height="28" Opacity="0.8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{Binding SecondsElapsed}" Foreground="#c9cacb" Margin="10 5 0 0"/>
+                    
+                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                        <TextBlock Text="Artists"/>
+                        <TextBlock Text="Albums"/>
+                        <TextBlock Text="Songs"/>
+                        <TextBlock Text="Date"/>
+                        <TextBlock Text="Genre"/>
+                        <TextBlock Text="Playlist"/>
+                    </StackPanel>
+                    
+                    <TextBlock Text="{Binding RemainingSeconds}" Grid.Column="2" Foreground="#c9cacb" Margin="0 5 10 0" HorizontalAlignment="Right"/>
+
+                </Grid>
+                <!-- End sort bar -->
+
             </Grid>
             <Button Style="{StaticResource WindowButtonStyle}"
                 HorizontalAlignment="Right"

@@ -116,6 +116,14 @@ namespace PiDu
             }
         }
 
+        public int Length
+        {
+            get
+            {
+                return (int)this._currentlyPlayingSound.PlayLength;
+            }
+        }
+
         public event EventHandler<int> CurrentPlayPosition;
         public event EventHandler PlayFinished;
     }

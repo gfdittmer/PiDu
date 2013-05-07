@@ -37,6 +37,7 @@ namespace PiDu
 
             _player = new Player();
             _player.PlayFinished += _player_PlayFinished;
+            _player.CurrentPlayPosition += _player_CurrentPlayPosition;
 
             
             SelectAlbum = new AlbumSelectCommand();
@@ -46,6 +47,20 @@ namespace PiDu
             ToggleLoop = new DelegateCommand(this.Loop);
 
             IsLooped = false;
+        }
+
+        void _player_CurrentPlayPosition(object sender, int e)
+        {
+            RemainingSeconds = "-" + MillisecondsToTime(_player.Length - e);
+            SecondsElapsed = MillisecondsToTime(e);
+
+            this.RaisePropertyChanged("RemainingSeconds");
+            this.RaisePropertyChanged("SecondsElapsed");
+        }
+
+        private string MillisecondsToTime(int milliseconds)
+        {
+            return TimeSpan.FromMilliseconds(milliseconds).ToString(@"mm\:ss");
         }
 
         public bool CurrentPlaylistShowing { get; set; }
@@ -119,8 +134,6 @@ namespace PiDu
             }
         }
 
-        
-
         private void PlayPause()
         {
             if (_player.IsPlaying)
@@ -150,6 +163,8 @@ namespace PiDu
         public Song CurrentSong { get; private set; }
 
         public Playlist Playlist { get; private set; }
+        public string RemainingSeconds { get; private set; }
+        public string SecondsElapsed { get; private set; }
 
         public ICommand SelectAlbum { get; set; }
         public ICommand PlayAlbum { get; set; }
