@@ -700,5 +700,13 @@ namespace PiDu
                 }
             }
         }
+
+        private void HandleNowPlayingMouseClick(object sender, MouseButtonEventArgs e)
+        {
+            if (((ViewModel)this.DataContext).ShowCurrentPlaylist != null)
+            {
+                ((ViewModel)this.DataContext).ShowCurrentPlaylist.Execute(null);
+            }
+        }
     }   
 }

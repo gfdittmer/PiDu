@@ -45,72 +45,14 @@ namespace PiDu
             PlaySong = new DelegateCommand<Song>(this.Play);
             PlayPauseSong = new DelegateCommand(this.PlayPause);
             ToggleLoop = new DelegateCommand(this.Loop);
+            ShowCurrentPlaylist = new DelegateCommand(this.ShowPlaylist);
 
             IsLooped = false;
         }
 
-        void _player_CurrentPlayPosition(object sender, int e)
-        {
-            RemainingSeconds = "-" + MillisecondsToTime(_player.Length - e);
-            SecondsElapsed = MillisecondsToTime(e);
+        
 
-            this.RaisePropertyChanged("RemainingSeconds");
-            this.RaisePropertyChanged("SecondsElapsed");
-        }
-
-        private string MillisecondsToTime(int milliseconds)
-        {
-            return TimeSpan.FromMilliseconds(milliseconds).ToString(@"mm\:ss");
-        }
-
-        public bool CurrentPlaylistShowing { get; set; }
-
-
-        void Playlist_CurrentSongChanged(object sender, EventArgs e)
-        {
-            this.StartPlay(Playlist.Current);
-        }
-
-        void _player_PlayFinished(object sender, EventArgs e)
-        {
-            if (Playlist.HasNext)
-            {
-                Playlist.Next();
-            }
-        }
-
-        void Playlist_NewList(object sender, EventArgs e)
-        {
-            this.StartPlay(Playlist.Current);
-        }
-
-        void FilteredAlbums_CurrentChanged(object sender, EventArgs e)
-        {
-            SelectedAlbum = FilteredAlbums.CurrentItem as Album;
-            if (SelectedAlbum != null)
-            {
-                Console.WriteLine("Selected: " + SelectedAlbum.Title);
-            }
-            this.RaisePropertyChanged("SelectedAlbum");
-            CurrentPlaylistShowing = false;
-            this.RaisePropertyChanged("CurrentPlaylistShowing");
-            
-        }
-
-        void _library_LibraryUpdated(object sender, EventArgs e)
-        {
-            Application.Current.Dispatcher.InvokeAsync(new Action(()=>
-            {
-                foreach (Album album in _library.Albums.OrderBy(x=>x.Title))
-                {
-                    if (!_albums.Contains(album))
-                    {
-                        _albums.Add(album);
-                    }
-                }
-            }));
-        }
-
+        #region Private methods
         private void Play(Album album)
         {
             Playlist.PlaySongs(album.Songs.ToList());
@@ -120,9 +62,8 @@ namespace PiDu
 
         private void Play(Song song)
         {
-            Playlist.PlaySongs(song.Album.Songs.ToList());
-            CurrentPlaylistShowing = true;
-            this.RaisePropertyChanged("CurrentPlaylistShowing");
+            Playlist.PlaySongs(song.Album.Songs.ToList(), song);
+            ShowPlaylist();
         }
 
         private void StartPlay(Song song)
@@ -146,8 +87,6 @@ namespace PiDu
             }
         }
 
-        
-
         private void Loop()
         {
             IsLooped = !IsLooped;
@@ -155,23 +94,102 @@ namespace PiDu
             this.RaisePropertyChanged("IsLooped");
         }
 
-        public bool IsLooped { get; set; }
+        private void ShowPlaylist()
+        {
+            CurrentPlaylistShowing = true;
+            this.RaisePropertyChanged("CurrentPlaylistShowing");
+        }
 
+        private string MillisecondsToTime(int milliseconds)
+        {
+            return TimeSpan.FromMilliseconds(milliseconds).ToString(@"mm\:ss");
+        }
+
+        #endregion
+
+        #region Properties
+        public bool IsLooped { get; set; }
         public ICollectionView FilteredAlbums { get; private set; }
         public Album SelectedAlbum { get; private set; }
-
         public Song CurrentSong { get; private set; }
-
         public Playlist Playlist { get; private set; }
         public string RemainingSeconds { get; private set; }
         public string SecondsElapsed { get; private set; }
+        public bool CurrentPlaylistShowing { get; set; }
+        #endregion
 
+        #region Player events
+        void _player_CurrentPlayPosition(object sender, int e)
+        {
+            RemainingSeconds = "-" + MillisecondsToTime(_player.Length - e);
+            SecondsElapsed = MillisecondsToTime(e);
+
+            this.RaisePropertyChanged("RemainingSeconds");
+            this.RaisePropertyChanged("SecondsElapsed");
+        }
+        void _player_PlayFinished(object sender, EventArgs e)
+        {
+            if (Playlist.HasNext)
+            {
+                Playlist.Next();
+            }
+        }
+        #endregion
+
+        #region Playlist events
+        void Playlist_CurrentSongChanged(object sender, EventArgs e)
+        {
+            this.StartPlay(Playlist.Current);
+        }
+
+        void Playlist_NewList(object sender, EventArgs e)
+        {
+            this.StartPlay(Playlist.Current);
+        }
+
+        void FilteredAlbums_CurrentChanged(object sender, EventArgs e)
+        {
+            SelectedAlbum = FilteredAlbums.CurrentItem as Album;
+            if (SelectedAlbum != null)
+            {
+                Console.WriteLine("Selected: " + SelectedAlbum.Title);
+            }
+            this.RaisePropertyChanged("SelectedAlbum");
+            CurrentPlaylistShowing = false;
+            this.RaisePropertyChanged("CurrentPlaylistShowing");
+
+        }
+
+        void _library_LibraryUpdated(object sender, EventArgs e)
+        {
+            Application.Current.Dispatcher.InvokeAsync(new Action(() =>
+            {
+                foreach (Album album in _library.Albums.OrderBy(x => x.Title))
+                {
+                    if (!_albums.Contains(album))
+                    {
+                        _albums.Add(album);
+                    }
+                }
+            }));
+        }
+        #endregion
+
+        #region Commands
         public ICommand SelectAlbum { get; set; }
         public ICommand PlayAlbum { get; set; }
         public ICommand PlaySong { get; set; }
         public ICommand PlayPauseSong { get; set; }
         public ICommand ToggleLoop { get; set; }
+        public ICommand ShowCurrentPlaylist { get; set; }
 
+        public ICommand SortByArtist { get; set; }
+        public ICommand SortByAlbum { get; set; }
+        public ICommand SortBySong { get; set; }
+        public ICommand SoryByDate { get; set; }
+        public ICommand SortByGenre { get; set; }
+        public ICommand SoryByPlaylist { get; set; }
+        #endregion
         public event PropertyChangedEventHandler PropertyChanged;
 
 

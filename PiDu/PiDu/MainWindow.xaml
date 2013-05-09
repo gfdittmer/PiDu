@@ -149,8 +149,8 @@
                             <Image  Source="Images\Player-controls_06.png" Stretch="None"/>
                         </Button>
                     </StackPanel>
-                    
-                    <Grid Grid.Column="1" DataContext="{Binding CurrentSong}" Background="Gainsboro">
+
+                    <Grid Grid.Column="1" DataContext="{Binding CurrentSong}" Background="Gainsboro" MouseDown="HandleNowPlayingMouseClick"> 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="4*"/>
@@ -159,9 +159,9 @@
                         <Border BorderBrush="White" HorizontalAlignment="Right" Opacity="0.77" BorderThickness="2" Width="51" Height="51">
                             <Rectangle Fill="DarkGray"  Width="49" Height="49"/>
                         </Border>
-                        
 
-                        <Grid Grid.Column="1" Margin="10 0 0 0">
+
+                        <Grid Grid.Column="1" Margin="10 0 0 0" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="1*"/>
@@ -194,14 +194,6 @@
                             <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick" />
                         </Style>
                     </ListView.ItemContainerStyle>
-                        <!--<ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Canvas Width="100" Height="100" ClipToBounds="True" Margin="0">
-                                    <Rectangle Width="100" Height="100" Fill="Lavender"/>
-                                    <TextBlock Text="{Binding Title}"/>
-                                </Canvas>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>-->
                     
                 </ListView>
                 <!-- End album grid area -->
@@ -222,6 +214,8 @@
                                             Path=DataContext.CurrentPlaylistShowing,
                                             Converter={StaticResource BoolToVisibilityConverter}, 
                                             ConverterParameter=false}"
+                             SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window},
+                                            Path=DataContext.CurrentSong}"
                              MouseDoubleClick="ListBoxItem_MouseDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -234,6 +228,8 @@
                              Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window},
                                             Path=DataContext.CurrentPlaylistShowing,
                                             Converter={StaticResource BoolToVisibilityConverter}}"
+                             SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window},
+                                            Path=DataContext.CurrentSong}"
                              MouseDoubleClick="ListBoxItem_MouseDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -255,13 +251,23 @@
 
                     <TextBlock Text="{Binding SecondsElapsed}" Foreground="#c9cacb" Margin="10 5 0 0"/>
                     
-                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
                         <TextBlock Text="Artists"/>
                         <TextBlock Text="Albums"/>
                         <TextBlock Text="Songs"/>
                         <TextBlock Text="Date"/>
                         <TextBlock Text="Genre"/>
                         <TextBlock Text="Playlist"/>
+                        <StackPanel.Style>
+                            <Style>
+                                <Style.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#c9cacb"/>
+                                        <Setter Property="FontFamily" Value="Segoe UI Bold"/>
+                                    </Style>
+                                </Style.Resources>
+                            </Style>
+                        </StackPanel.Style>
                     </StackPanel>
                     
                     <TextBlock Text="{Binding RemainingSeconds}" Grid.Column="2" Foreground="#c9cacb" Margin="0 5 10 0" HorizontalAlignment="Right"/>

@@ -20,7 +20,7 @@ namespace PiDu
         {
             this._engine = new ISoundEngine();
 
-            this._playUpdater = new Timer(100);
+            this._playUpdater = new Timer(500);
             this._playUpdater.Elapsed += _playUpdater_Elapsed;
         }
 

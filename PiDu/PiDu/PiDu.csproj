@@ -28,7 +28,7 @@
     <TargetCulture>en</TargetCulture>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>10</ApplicationRevision>
+    <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -179,7 +179,7 @@
     <Resource Include="Images\Player-controls_11.png" />
     <Resource Include="Images\Player-controls_04.png" />
     <Resource Include="Images\Player-controls_09.png" />
-    <Content Include="lib\irrKlang.NET4.dll" />
+    <Content Include="irrKlang.NET4.dll" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -219,7 +219,7 @@
       <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
-    <PublishFile Include="lib\irrKlang.NET4.dll">
+    <PublishFile Include="irrKlang.NET4.dll">
       <Visible>False</Visible>
       <Group>
       </Group>
