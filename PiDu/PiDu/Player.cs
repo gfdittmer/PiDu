@@ -107,6 +107,21 @@ namespace PiDu
             }
         }
 
+        public bool Looped
+        {
+            get
+            {
+                return HasSoundFile && this._currentlyPlayingSound.Looped;
+            }
+            set
+            {
+                if (HasSoundFile)
+                {
+                    this._currentlyPlayingSound.Looped = value;
+                }
+            }
+        }
+
         public void Stop()
         {
             if (HasSoundFile)

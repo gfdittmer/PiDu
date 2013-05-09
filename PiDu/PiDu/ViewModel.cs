@@ -110,6 +110,7 @@ namespace PiDu
         {
             IsLooped = !IsLooped;
 
+            _player.Looped = IsLooped;
             this.RaisePropertyChanged("IsLooped");
         }
 
