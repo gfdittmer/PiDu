@@ -174,12 +174,7 @@
     <Resource Include="Images\Player-controls_03.png" />
     <Resource Include="Images\Player-controls_05.png" />
     <Resource Include="Images\Player-controls_06.png" />
-    <Resource Include="Images\Player-controls_07.png" />
-    <Resource Include="Images\Player-controls_08.png" />
-    <Resource Include="Images\Player-controls_10.png" />
-    <Resource Include="Images\Player-controls_11.png" />
     <Resource Include="Images\Player-controls_04.png" />
-    <Resource Include="Images\Player-controls_09.png" />
     <Content Include="irrKlang.NET4.dll" />
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pidu="clr-namespace:PiDu"
         Title="MainWindow" Height="350" Width="525" WindowStyle="None" ResizeMode="NoResize"
-        UseLayoutRounding="True"
+        
         PreviewMouseMove="HandlePreviewMouseMove">
     <Grid>
         <Grid.Resources>
@@ -184,15 +184,15 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Orientation="Horizontal" Style="{StaticResource NowPlayingControls}" HorizontalAlignment="Center"
-                                SnapsToDevicePixels="True">
+>
                         <Button Tag="Loop" Command="{Binding ToggleLoop}" Width="36" Height="37">
                             <Image Source="Images\Player-controls_02.png" Stretch="None"  />
                         </Button>
                         <Button Tag="Prev" Command="{Binding PreviousSong}" Width="46" Height="37">
                             <Image Source="Images\Player-controls_03.png" Stretch="None" Width="46" Height="37"/>
                         </Button>
-                        <Button Command="{Binding PlayPauseSong}" Tag="Play" Width="59" Height="37">
-                            <Image Source="Images\Player-controls_04.png"  Width="59" Height="37" Stretch="None"/>
+                        <Button Command="{Binding PlayPauseSong}" Tag="Play">
+                            <Image Source="Images\Player-controls_04.png" Width="59" Height="37"  Stretch="None"/>
                         </Button>
                         <Button Tag="Next" Command="{Binding NextSong}" Width="46" Height="37">
                             <Image Source="Images\Player-controls_05.png" Stretch="None" Width="46" Height="37" />
