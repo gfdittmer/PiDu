@@ -72,7 +72,14 @@ namespace PiDu
         public void Previous()
         {
             index--;
-            if (index < 0) index = 0;
+            if (index < 0) { index = 0; }
+            else
+            {
+                if (this.CurrentSongChanged != null)
+                {
+                    this.CurrentSongChanged(this, new EventArgs());
+                }
+            }
         }
 
         public bool HasPrevious

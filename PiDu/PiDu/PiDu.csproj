@@ -28,7 +28,7 @@
     <TargetCulture>en</TargetCulture>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>11</ApplicationRevision>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -169,6 +169,7 @@
     <Content Include="ikpMP3.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\Nowplaying-Seethrough.png" />
     <Resource Include="Images\Player-controls_02.png" />
     <Resource Include="Images\Player-controls_03.png" />
     <Resource Include="Images\Player-controls_05.png" />

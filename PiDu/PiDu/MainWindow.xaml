@@ -8,9 +8,13 @@
     <Grid>
         <Grid.Resources>
             <pidu:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <CollectionViewSource Source="{Binding SelectedAlbum.Songs}" x:Key="songView" />
+            <CollectionViewSource Source="{Binding CurrentSong.Album.Songs}" x:Key="currentSongView" />
+            
             <Style TargetType="Grid" x:Key="ContentBackground">
                 <Setter Property="Background" Value="Gray"/>
             </Style>
+            
             <Style TargetType="Rectangle" x:Key="NowPlayingHeader">
                 <Setter Property="Fill">
                     <Setter.Value>
@@ -24,10 +28,12 @@
                 </Setter>
                 <Setter Property="Height" Value="63"/>
             </Style>
+            
             <Style TargetType="Border" x:Key="Border">
                 <Setter Property="BorderBrush"  Value="Orange"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness" Value="0"/>
             </Style>
+            
             <Style TargetType="Button" x:Key="WindowButtonStyle">
                 <Style.Resources>
                     <Style TargetType="TextBlock">
@@ -40,6 +46,7 @@
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderThickness" Value="0"/>
             </Style>
+            
             <Style TargetType="StackPanel" x:Key="NowPlayingControls">
                 <Style.Resources>
                     <Style TargetType="Button">
@@ -49,6 +56,7 @@
                     </Style>
                 </Style.Resources>
             </Style>
+            
             <Style TargetType="ListView" x:Key="AlbumArt">
                 <Setter Property="ItemTemplate">
                     <Setter.Value>
@@ -90,6 +98,7 @@
                     </Style>
                 </Style.Resources>
             </Style>
+            
             <Style TargetType="Grid" x:Key="Playlist">
                 <Setter Property="Width" Value="400"/>
                 <Setter Property="Height" Value="250"/>
@@ -110,8 +119,50 @@
                 </Style.Resources>
             </Style>
             
-            <CollectionViewSource Source="{Binding SelectedAlbum.Songs}" x:Key="songView" />
-            <CollectionViewSource Source="{Binding CurrentSong.Album.Songs}" x:Key="currentSongView" />
+            <Style TargetType="Grid" x:Key="NowPlayingDetails">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="Images\Nowplaying-Seethrough.png" Stretch="Fill"/>
+                    </Setter.Value>
+                </Setter>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="White"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Opacity" Value="0.77"/>
+                        <Setter Property="Height" Value="49"/>
+                        <Setter Property="Width" Value="49"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="NowPlayingSong">
+                <Setter Property="FontFamily" Value="Segoe UI Bold"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontSize" Value="14pt"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="NowPlayingAlbum" BasedOn="{StaticResource NowPlayingSong}">
+                <Setter Property="FontFamily" Value="Segoe UI Regular"/>
+                <Setter Property="FontSize" Value="9pt"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+            </Style>
+            
+            <Style TargetType="Grid" x:Key="SortBar">
+                <Setter Property="Background" Value="#414141"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="Opacity" Value="0.8"/>
+                <Style.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="#c9cacb"/>
+                        <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
         </Grid.Resources>
         
         <Grid Style="{StaticResource ContentBackground}">
@@ -122,8 +173,9 @@
                 </Grid.RowDefinitions>
 
                 <Rectangle Style="{StaticResource NowPlayingHeader}"
-                PreviewMouseDown="HandleHeaderPreviewMouseDown" />
+                    PreviewMouseDown="HandleHeaderPreviewMouseDown" />
 
+                <!-- Begin now playing header -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -135,47 +187,51 @@
                         <Button Tag="Loop">
                             <Image Source="Images\Player-controls_02.png" Stretch="None"/>
                         </Button>
-                        <Button Tag="Prev">
+                        <Button Tag="Prev" Command="{Binding PreviousSong}">
                             <Image Source="Images\Player-controls_03.png" Stretch="None"/>
                         </Button>
                         <Button Command="{Binding PlayPauseSong}" Tag="Play">
-                            <Image Source="Images\Player-controls_04.png" Stretch="None"
-       />
+                            <Image Source="Images\Player-controls_04.png" Stretch="None"/>
                         </Button>
-                        <Button Tag="Next">
+                        <Button Tag="Next" Command="{Binding NextSong}">
                             <Image Source="Images\Player-controls_05.png" Stretch="None" />
                         </Button>
-                        <Button Tag="Shuffle">
+                        <Button Tag="Shuffle" IsEnabled="False">
                             <Image  Source="Images\Player-controls_06.png" Stretch="None"/>
                         </Button>
                     </StackPanel>
 
-                    <Grid Grid.Column="1" DataContext="{Binding CurrentSong}" Background="Gainsboro" MouseDown="HandleNowPlayingMouseClick"> 
+                    <Grid Grid.Column="1" DataContext="{Binding CurrentSong}" 
+                          Style="{StaticResource NowPlayingDetails}" 
+                          MouseDown="HandleNowPlayingMouseClick"> 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="4*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border BorderBrush="White" HorizontalAlignment="Right" Opacity="0.77" BorderThickness="2" Width="51" Height="51">
+                        <!-- Album image-->
+                        <Border>
                             <Rectangle Fill="DarkGray"  Width="49" Height="49"/>
                         </Border>
-
-
+                        <!-- -->
+                        
+                        <!-- Details -->
                         <Grid Grid.Column="1" Margin="10 0 0 0" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
                             
-                            <TextBlock Text="{Binding Name}" FontFamily="Segoe UI Bold" Foreground="White" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                            <TextBlock Text="{Binding Album.Title}" Grid.Row="1"  HorizontalAlignment="Left" Foreground="White" FontSize="16" VerticalAlignment="Top"/>
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource NowPlayingSong}"/>
+                            <TextBlock Text="{Binding Album.Title}" Grid.Row="1" Style="{StaticResource NowPlayingAlbum}" />
                         </Grid>
+                        <!-- -->
                     </Grid>
                     
                     
                     <TextBlock Text="Volume controls" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
-                
+                <!-- End now playing header -->
                 
                 
                 <!-- Begin album grid area -->
@@ -241,15 +297,14 @@
                 <!-- End playlist area -->
 
                 <!--Begin sort bar-->
-
-                <Grid Grid.Row="1" Background="#414141" VerticalAlignment="Top" Height="28" Opacity="0.8">
+                <Grid Grid.Row="1" Style="{StaticResource SortBar}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="{Binding SecondsElapsed}" Foreground="#c9cacb" Margin="10 5 0 0"/>
+                    <TextBlock Text="{Binding SecondsElapsed}" Margin="4 5 0 0"/>
                     
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
                         <TextBlock Text="Artists"/>
@@ -270,8 +325,7 @@
                         </StackPanel.Style>
                     </StackPanel>
                     
-                    <TextBlock Text="{Binding RemainingSeconds}" Grid.Column="2" Foreground="#c9cacb" Margin="0 5 10 0" HorizontalAlignment="Right"/>
-
+                    <TextBlock Text="{Binding RemainingSeconds}" Grid.Column="2" Margin="0 5 4 0" HorizontalAlignment="Right"/>
                 </Grid>
                 <!-- End sort bar -->
 

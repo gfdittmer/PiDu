@@ -44,6 +44,8 @@ namespace PiDu
             PlayAlbum = new DelegateCommand<Album>(this.Play);
             PlaySong = new DelegateCommand<Song>(this.Play);
             PlayPauseSong = new DelegateCommand(this.PlayPause);
+            NextSong = new DelegateCommand(this.Next);
+            PreviousSong = new DelegateCommand(this.Previous);
             ToggleLoop = new DelegateCommand(this.Loop);
             ShowCurrentPlaylist = new DelegateCommand(this.ShowPlaylist);
 
@@ -56,8 +58,7 @@ namespace PiDu
         private void Play(Album album)
         {
             Playlist.PlaySongs(album.Songs.ToList());
-            CurrentPlaylistShowing = true;
-            this.RaisePropertyChanged("CurrentPlaylistShowing");
+            ShowPlaylist();
         }
 
         private void Play(Song song)
@@ -84,6 +85,24 @@ namespace PiDu
             else
             {
                 _player.Resume(IsLooped);
+            }
+        }
+
+        private void Next()
+        {
+            if (Playlist.HasNext)
+            {
+                Playlist.Next();
+                ShowPlaylist();
+            }
+        }
+
+        private void Previous()
+        {
+            if (Playlist.HasPrevious)
+            {
+                Playlist.Previous();
+                ShowPlaylist();
             }
         }
 
@@ -182,6 +201,8 @@ namespace PiDu
         public ICommand PlayPauseSong { get; set; }
         public ICommand ToggleLoop { get; set; }
         public ICommand ShowCurrentPlaylist { get; set; }
+        public ICommand NextSong { get; set; }
+        public ICommand PreviousSong { get; set; }
 
         public ICommand SortByArtist { get; set; }
         public ICommand SortByAlbum { get; set; }
