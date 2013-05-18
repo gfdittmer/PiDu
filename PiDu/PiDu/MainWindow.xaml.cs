@@ -727,9 +727,8 @@ namespace PiDu
 
         private void Slider_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)// && typeof(e.MouseDevice.Captured) == System.Windows.Controls.Primitives.Thumb)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Console.WriteLine("Dragging:" + ((Slider)sender).Value);
                 if (((ViewModel)this.DataContext).PrepareSeek != null)
                 {
                     ((ViewModel)this.DataContext).PrepareSeek.Execute(((Slider)sender).Value);

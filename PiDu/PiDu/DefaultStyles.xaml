@@ -47,11 +47,12 @@
     </Style>
 
     <Style TargetType="ListView" x:Key="AlbumArt">
+        <Setter Property="Background" Value="#5b5a5a"/>
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Canvas Width="100" Height="100" ClipToBounds="True">
-                        <Rectangle Width="100" Height="100" Fill="Lavender"/>
+                    <Canvas Width="80" Height="80" ClipToBounds="True">
+                        <Rectangle Width="80" Height="80" Fill="Honeydew"/>
                         <TextBlock Text="{Binding Title}"/>
                     </Canvas>
                 </DataTemplate>
@@ -149,6 +150,7 @@
         <Style.Resources>
             <Style TargetType="TextBlock">
                 <Setter Property="Foreground" Value="#c9cacb"/>
+                <Setter Property="FontSize" Value="10"/>
                 <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
             </Style>
         </Style.Resources>
