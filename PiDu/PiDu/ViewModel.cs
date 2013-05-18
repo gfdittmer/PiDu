@@ -51,6 +51,8 @@ namespace PiDu
             PrepareSeek = new DelegateCommand<double>(this.TempUpdateSeekPos);
             Seek = new DelegateCommand<double>(this.SeekToPos);
 
+            TotalSeconds = 10;
+            CurrentTime = 0;
             IsLooped = false;
         }
 
@@ -149,6 +151,7 @@ namespace PiDu
 
         private void UpdateSeekPos(int pos)
         {
+            //Console.WriteLine("Updating " + pos);
             RemainingSeconds = "-" + MillisecondsToTime(_player.Length - pos);
             SecondsElapsed = MillisecondsToTime(pos);
 

@@ -191,6 +191,7 @@
                         Thumb.DragStarted="Slider_DragStarted"
                         Thumb.DragCompleted="Slider_DragCompleted"
                         MouseMove="Slider_MouseEnter"
+                        MouseUp="Slider_MouseUp"    
                         Value="{Binding CurrentTime}"/>
                 <!-- End timeline-->
 

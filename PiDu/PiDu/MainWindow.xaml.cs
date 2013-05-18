@@ -727,12 +727,21 @@ namespace PiDu
 
         private void Slider_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && e.MouseDevice.Captured == null)
+            if (e.LeftButton == MouseButtonState.Pressed)// && typeof(e.MouseDevice.Captured) == System.Windows.Controls.Primitives.Thumb)
             {
-                if (((ViewModel)this.DataContext).Seek != null)
+                Console.WriteLine("Dragging:" + ((Slider)sender).Value);
+                if (((ViewModel)this.DataContext).PrepareSeek != null)
                 {
-                    ((ViewModel)this.DataContext).Seek.Execute(((Slider)sender).Value);
+                    ((ViewModel)this.DataContext).PrepareSeek.Execute(((Slider)sender).Value);
                 }
+            }
+        }
+
+        private void Slider_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (((ViewModel)this.DataContext).Seek != null)
+            {
+                ((ViewModel)this.DataContext).Seek.Execute(((Slider)sender).Value);
             }
         }
     }   
