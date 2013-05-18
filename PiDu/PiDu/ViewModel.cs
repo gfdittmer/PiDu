@@ -48,6 +48,8 @@ namespace PiDu
             PreviousSong = new DelegateCommand(this.Previous);
             ToggleLoop = new DelegateCommand(this.Loop);
             ShowCurrentPlaylist = new DelegateCommand(this.ShowPlaylist);
+            PrepareSeek = new DelegateCommand<double>(this.TempUpdateSeekPos);
+            Seek = new DelegateCommand<double>(this.SeekToPos);
 
             IsLooped = false;
         }
@@ -73,6 +75,9 @@ namespace PiDu
             {
                 CurrentSong = song;
                 this.RaisePropertyChanged("CurrentSong");
+
+                TotalSeconds = _player.Length;
+                this.RaisePropertyChanged("TotalSeconds");
             }
         }
 
@@ -125,6 +130,41 @@ namespace PiDu
             return TimeSpan.FromMilliseconds(milliseconds).ToString(@"mm\:ss");
         }
 
+        private void TempUpdateSeekPos(double pos)
+        {
+            IsDragging = true;
+            UpdateSeekPos((int)pos);
+        }
+
+        private bool IsDragging = false;
+        private void UpdateSlider(int pos)
+        {
+            if (!IsDragging)
+            {
+                CurrentTime = pos;
+
+                this.RaisePropertyChanged("CurrentTime");
+            }
+        }
+
+        private void UpdateSeekPos(int pos)
+        {
+            RemainingSeconds = "-" + MillisecondsToTime(_player.Length - pos);
+            SecondsElapsed = MillisecondsToTime(pos);
+
+            this.RaisePropertyChanged("RemainingSeconds");
+            this.RaisePropertyChanged("SecondsElapsed");
+        }
+
+        private void SeekToPos(double pos)
+        {
+            if (_player.IsPlaying)
+            {
+                _player.Seek((uint)pos);
+            }
+            IsDragging = false;
+        }
+
         #endregion
 
         #region Properties
@@ -135,17 +175,17 @@ namespace PiDu
         public Playlist Playlist { get; private set; }
         public string RemainingSeconds { get; private set; }
         public string SecondsElapsed { get; private set; }
+        public int TotalSeconds { get; private set; }
+        public int CurrentTime { get; private set; }
         public bool CurrentPlaylistShowing { get; set; }
         #endregion
 
         #region Player events
         void _player_CurrentPlayPosition(object sender, int e)
         {
-            RemainingSeconds = "-" + MillisecondsToTime(_player.Length - e);
-            SecondsElapsed = MillisecondsToTime(e);
+            UpdateSeekPos(e);
 
-            this.RaisePropertyChanged("RemainingSeconds");
-            this.RaisePropertyChanged("SecondsElapsed");
+            UpdateSlider(e);
         }
         void _player_PlayFinished(object sender, EventArgs e)
         {
@@ -204,6 +244,8 @@ namespace PiDu
         public ICommand ShowCurrentPlaylist { get; set; }
         public ICommand NextSong { get; set; }
         public ICommand PreviousSong { get; set; }
+        public ICommand PrepareSeek { get; set; }
+        public ICommand Seek { get; set; }
 
         public ICommand SortByArtist { get; set; }
         public ICommand SortByAlbum { get; set; }

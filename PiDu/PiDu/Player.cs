@@ -62,8 +62,8 @@ namespace PiDu
             if (this._currentlyPlayingSound != null && this._currentlyPlayingSound.Finished && 
                 this.PlayFinished != null)
             {
-                this.PlayFinished(this, new EventArgs());
                 this._playUpdater.Stop();
+                this.PlayFinished(this, new EventArgs());
             }
         }
 

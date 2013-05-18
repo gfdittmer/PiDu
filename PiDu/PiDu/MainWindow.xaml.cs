@@ -708,5 +708,32 @@ namespace PiDu
                 ((ViewModel)this.DataContext).ShowCurrentPlaylist.Execute(null);
             }
         }
+
+        private void Slider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            if (((ViewModel)this.DataContext).PrepareSeek != null)
+            {
+                ((ViewModel)this.DataContext).PrepareSeek.Execute(((Slider)sender).Value);
+            }
+        }
+
+        private void Slider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            if (((ViewModel)this.DataContext).Seek != null)
+            {
+                ((ViewModel)this.DataContext).Seek.Execute(((Slider)sender).Value);
+            }
+        }
+
+        private void Slider_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && e.MouseDevice.Captured == null)
+            {
+                if (((ViewModel)this.DataContext).Seek != null)
+                {
+                    ((ViewModel)this.DataContext).Seek.Execute(((Slider)sender).Value);
+                }
+            }
+        }
     }   
 }
