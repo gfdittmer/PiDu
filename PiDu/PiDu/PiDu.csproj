@@ -28,7 +28,7 @@
     <TargetCulture>en</TargetCulture>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>17</ApplicationRevision>
+    <ApplicationRevision>18</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -103,14 +103,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BoolToVisibilityConverter.cs" />
-    <Compile Include="Library.cs" />
-    <Compile Include="MusicDataProvider.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Playlist.cs" />
-    <Compile Include="Song.cs" />
-    <Compile Include="ViewModel.cs" />
-    <Page Include="DefaultStyles.xaml">
+    <Compile Include="Model\IPlayer.cs" />
+    <Compile Include="View\BoolToVisibilityConverter.cs" />
+    <Compile Include="Model\FreeCoverMusicDataProvider.cs" />
+    <Compile Include="Model\IAlbum.cs" />
+    <Compile Include="Model\IMusicDataProvider.cs" />
+    <Compile Include="Model\ILibrary.cs" />
+    <Compile Include="Model\IPlaylist.cs" />
+    <Compile Include="Model\ISong.cs" />
+    <Compile Include="Model\Library.cs" />
+    <Compile Include="Model\MusicDataProvider.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Playlist.cs" />
+    <Compile Include="Model\Song.cs" />
+    <Compile Include="ViewModel\IMainViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="View\DraggablePlaylist.xaml.cs">
+      <DependentUpon>DraggablePlaylist.xaml</DependentUpon>
+    </Compile>
+    <Page Include="View\DraggablePlaylist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Styles\DefaultStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -118,7 +133,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Album.cs" />
+    <Compile Include="Model\Album.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -157,14 +172,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\ACTIVESHADOWBOTTOM.png" />
-    <Resource Include="Images\ACTIVESHADOWLEFT.png" />
-    <Resource Include="Images\ACTIVESHADOWRIGHT.png" />
-    <Resource Include="Images\ACTIVESHADOWTOP.png" />
-    <Resource Include="Images\INACTIVESHADOWBOTTOM.png" />
-    <Resource Include="Images\INACTIVESHADOWLEFT.png" />
-    <Resource Include="Images\INACTIVESHADOWRIGHT.png" />
-    <Resource Include="Images\INACTIVESHADOWTOP.png" />
+    <Resource Include="View\Styles\Images\ACTIVESHADOWBOTTOM.png" />
+    <Resource Include="View\Styles\Images\ACTIVESHADOWLEFT.png" />
+    <Resource Include="View\Styles\Images\ACTIVESHADOWRIGHT.png" />
+    <Resource Include="View\Styles\Images\ACTIVESHADOWTOP.png" />
+    <Resource Include="View\Styles\Images\INACTIVESHADOWBOTTOM.png" />
+    <Resource Include="View\Styles\Images\INACTIVESHADOWLEFT.png" />
+    <Resource Include="View\Styles\Images\INACTIVESHADOWRIGHT.png" />
+    <Resource Include="View\Styles\Images\INACTIVESHADOWTOP.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ikpFlac.dll">
@@ -173,12 +188,12 @@
     <Content Include="ikpMP3.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Images\Nowplaying-Seethrough.png" />
-    <Resource Include="Images\Player-controls_02.png" />
-    <Resource Include="Images\Player-controls_03.png" />
-    <Resource Include="Images\Player-controls_05.png" />
-    <Resource Include="Images\Player-controls_06.png" />
-    <Resource Include="Images\Player-controls_04.png" />
+    <Resource Include="View\Styles\Images\Nowplaying-Seethrough.png" />
+    <Resource Include="View\Styles\Images\Player-controls_02.png" />
+    <Resource Include="View\Styles\Images\Player-controls_03.png" />
+    <Resource Include="View\Styles\Images\Player-controls_05.png" />
+    <Resource Include="View\Styles\Images\Player-controls_06.png" />
+    <Resource Include="View\Styles\Images\Player-controls_04.png" />
     <Content Include="irrKlang.NET4.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -230,6 +245,7 @@
       <FileType>File</FileType>
     </PublishFile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

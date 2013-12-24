@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PiDu.Model;
+using PiDu.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -41,7 +44,7 @@ namespace PiDu
         private HwndSource m_hwndSource;
         private DateTime m_headerLastClicked;
 
-        private ViewModel viewModel;
+        private MainViewModel viewModel;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -83,7 +86,7 @@ namespace PiDu
 
             base.OnInitialized(e);
 
-            viewModel = new ViewModel();
+            viewModel = new MainViewModel();
 
             this.DataContext = viewModel;
         }
@@ -224,16 +227,16 @@ namespace PiDu
                 Double cornerRadius = 1.75;
 
 
-                m_wndT.Content = GetDecorator("Images/ACTIVESHADOWTOP.PNG");
+                m_wndT.Content = GetDecorator("View/Styles/Images/ACTIVESHADOWTOP.PNG");
                 //m_wndL.Content = GetDecorator("Images/ACTIVESHADOWLEFT.PNG", cornerRadius);
-                m_wndB.Content = GetDecorator("Images/ACTIVESHADOWBOTTOM.PNG");
+                m_wndB.Content = GetDecorator("View/Styles/Images/ACTIVESHADOWBOTTOM.PNG");
                 //m_wndR.Content = GetDecorator("Images/ACTIVESHADOWRIGHT.PNG", cornerRadius);
             }
             else
             {
-                m_wndT.Content = GetDecorator("Images/INACTIVESHADOWTOP.PNG");
+                m_wndT.Content = GetDecorator("View/Styles/Images/INACTIVESHADOWTOP.PNG");
                 //m_wndL.Content = GetDecorator("Images/INACTIVESHADOWLEFT.PNG");
-                m_wndB.Content = GetDecorator("Images/INACTIVESHADOWBOTTOM.PNG");
+                m_wndB.Content = GetDecorator("View/Styles/Images/INACTIVESHADOWBOTTOM.PNG");
                 //m_wndR.Content = GetDecorator("Images/INACTIVESHADOWRIGHT.PNG");
             }
         }
@@ -678,24 +681,13 @@ namespace PiDu
         }
         #endregion
 
-        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (((ViewModel)this.DataContext).PlaySong != null)
-            {
-                if (((ListBox)sender).SelectedItem != null)
-                {
-                    ((ViewModel)this.DataContext).PlaySong.Execute((Song)(((ListBox)sender).SelectedItem)); //TODO: don't do this...
-                }
-
-            }
-        }
-
+        
         private void HandleDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(((ViewModel)this.DataContext).PlayAlbum != null){
+            if(((MainViewModel)this.DataContext).PlayAlbum != null){
                 if(((ListViewItem)sender).Content as Album != null){
 
-                    ((ViewModel)this.DataContext).PlayAlbum.Execute((Album)(((ListViewItem)sender).Content as Album));
+                    ((MainViewModel)this.DataContext).PlayAlbum.Execute((Album)(((ListViewItem)sender).Content as Album));
 
                 }
             }
@@ -703,25 +695,25 @@ namespace PiDu
 
         private void HandleNowPlayingMouseClick(object sender, MouseButtonEventArgs e)
         {
-            if (((ViewModel)this.DataContext).ShowCurrentPlaylist != null)
+            if (((MainViewModel)this.DataContext).ShowCurrentPlaylist != null)
             {
-                ((ViewModel)this.DataContext).ShowCurrentPlaylist.Execute(null);
+                ((MainViewModel)this.DataContext).ShowCurrentPlaylist.Execute(null);
             }
         }
 
         private void Slider_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
         {
-            if (((ViewModel)this.DataContext).PrepareSeek != null)
+            if (((MainViewModel)this.DataContext).PrepareSeek != null)
             {
-                ((ViewModel)this.DataContext).PrepareSeek.Execute(((Slider)sender).Value);
+                ((MainViewModel)this.DataContext).PrepareSeek.Execute(((Slider)sender).Value);
             }
         }
 
         private void Slider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
-            if (((ViewModel)this.DataContext).Seek != null)
+            if (((MainViewModel)this.DataContext).Seek != null)
             {
-                ((ViewModel)this.DataContext).Seek.Execute(((Slider)sender).Value);
+                ((MainViewModel)this.DataContext).Seek.Execute(((Slider)sender).Value);
             }
         }
 
@@ -729,18 +721,38 @@ namespace PiDu
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (((ViewModel)this.DataContext).PrepareSeek != null)
+                if (((MainViewModel)this.DataContext).PrepareSeek != null)
                 {
-                    ((ViewModel)this.DataContext).PrepareSeek.Execute(((Slider)sender).Value);
+                    ((MainViewModel)this.DataContext).PrepareSeek.Execute(((Slider)sender).Value);
                 }
             }
         }
 
         private void Slider_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (((ViewModel)this.DataContext).Seek != null)
+            if (((MainViewModel)this.DataContext).Seek != null)
             {
-                ((ViewModel)this.DataContext).Seek.Execute(((Slider)sender).Value);
+                ((MainViewModel)this.DataContext).Seek.Execute(((Slider)sender).Value);
+            }
+        }
+
+        private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            Thumb myThumb = sender as Thumb;
+
+            Canvas.SetLeft(myThumb, Canvas.GetLeft(myThumb) + e.HorizontalChange);
+            Canvas.SetTop(myThumb, Canvas.GetTop(myThumb) + e.VerticalChange);
+        }
+
+        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (((IMainViewModel)this.DataContext).PlaySong != null)
+            {
+                if (((ListBox)sender).SelectedItem != null)
+                {
+                    ((IMainViewModel)this.DataContext).PlaySong.Execute((ISong)(((ListBox)sender).SelectedItem)); //TODO: don't do this...
+                }
+
             }
         }
     }   
