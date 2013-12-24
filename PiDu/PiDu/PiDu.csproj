@@ -118,13 +118,6 @@
     <Compile Include="Model\Song.cs" />
     <Compile Include="ViewModel\IMainViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="View\DraggablePlaylist.xaml.cs">
-      <DependentUpon>DraggablePlaylist.xaml</DependentUpon>
-    </Compile>
-    <Page Include="View\DraggablePlaylist.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Styles\DefaultStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

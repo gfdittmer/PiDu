@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pidu="clr-namespace:PiDu"
-        xmlns:piduView="clr-namespace:PiDu.View"
         Title="MainWindow" Height="350" Width="525" WindowStyle="None" ResizeMode="NoResize"
         
         PreviewMouseMove="HandlePreviewMouseMove">
