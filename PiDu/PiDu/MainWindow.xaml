@@ -63,7 +63,7 @@
                 
             </ResourceDictionary>
         </Grid.Resources>
-        
+
         <Grid Style="{StaticResource ContentBackground}" x:Name="ContentWindow">
             <Grid>
                 <Grid.RowDefinitions>
@@ -141,6 +141,7 @@
                               IsSynchronizedWithCurrentItem="True"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               Style="{StaticResource AlbumArt}"
+                              Panel.ZIndex="10"
                               Grid.Row="1">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -158,8 +159,8 @@
                 
                 <!-- Begin playlist area -->
 
-                <Canvas>
-                    <Thumb DragDelta="Thumb_DragDelta" Template="{StaticResource playlistTemplate}" Canvas.Left="20" Canvas.Top="300"/>
+                <Canvas Grid.Row="1" ClipToBounds="True" Panel.ZIndex="50">
+                    <Thumb DragDelta="Thumb_DragDelta" Template="{StaticResource playlistTemplate}" Canvas.Left="20" Canvas.Top="250"/>
                 </Canvas>
                 
                 <!-- End playlist area -->
@@ -167,7 +168,7 @@
                 
                 
                 <!--Begin sort bar-->
-                <Grid Grid.Row="1" Style="{StaticResource SortBar}">
+                <Grid Grid.Row="1" Style="{StaticResource SortBar}" Panel.ZIndex="500">
                     <Grid.Effect>
                         <DropShadowEffect ShadowDepth="1" Direction="270" BlurRadius="30"/>
                     </Grid.Effect>
@@ -205,12 +206,15 @@
                 <!-- End sort bar -->
 
                 <!-- Begin timeline -->
-                <Slider IsMoveToPointEnabled="True" Height="3" Grid.Row="1" Cursor="Hand" Maximum="{Binding TotalSeconds}"
+                
+                    <Slider IsMoveToPointEnabled="True" Height="10" Cursor="Hand" Maximum="{Binding TotalSeconds}" Grid.Row="1" Panel.ZIndex="1000"
                         Thumb.DragStarted="Slider_DragStarted"
                         Thumb.DragCompleted="Slider_DragCompleted"
                         MouseMove="Slider_MouseEnter"
                         MouseUp="Slider_MouseUp"    
                         Value="{Binding CurrentTime}"/>
+                
+                
                 <!-- End timeline-->
 
             </Grid>

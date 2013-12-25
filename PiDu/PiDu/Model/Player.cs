@@ -135,6 +135,9 @@ namespace PiDu.Model
         {
             get
             {
+                if (this._currentlyPlayingSound == null)
+                    return 0;
+
                 return (int)this._currentlyPlayingSound.PlayLength;
             }
         }
