@@ -25,7 +25,7 @@ namespace PiDu
         {
             _library = new Library();
             _library.LibraryUpdated += _library_LibraryUpdated;
-            Task.Run(()=> _library.Load());
+            _library.Load();
 
             Playlist = new Model.Playlist();
             Playlist.NewList += Playlist_NewList;

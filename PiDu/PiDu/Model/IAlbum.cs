@@ -14,6 +14,8 @@ namespace PiDu.Model
         string Artist { get; set; }
         string Title { get; set; }
 
+        string ImageUri { get; set; }
+
         IDictionary<string, object> ExternalMetaData { get; set; }
     }
 }

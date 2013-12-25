@@ -104,8 +104,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\IPlayer.cs" />
+    <Compile Include="Model\MusicDataProviderBase.cs" />
     <Compile Include="View\BoolToVisibilityConverter.cs" />
-    <Compile Include="Model\FreeCoverMusicDataProvider.cs" />
+    <Compile Include="Model\LastFMMusicDataProvider.cs" />
     <Compile Include="Model\IAlbum.cs" />
     <Compile Include="Model\IMusicDataProvider.cs" />
     <Compile Include="Model\ILibrary.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Model\Song.cs" />
     <Compile Include="ViewModel\IMainViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="View\UriToBitmapImageConverter.cs" />
     <Page Include="View\Styles\DefaultStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

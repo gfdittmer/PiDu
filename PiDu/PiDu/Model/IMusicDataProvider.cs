@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PiDu.Model
 {
-    public interface IMusicDataProvider
+    public interface IMusicDataProvider : INotifyPropertyChanged
     {
-        void GetAlbumData(IAlbum album);
+        string CacheDirectory { get; set; }
+
+        Task<bool> GetExternalAlbumData(IAlbum album);
+        Task<bool> GetCachedAlbumData(IAlbum album);
     }
 }

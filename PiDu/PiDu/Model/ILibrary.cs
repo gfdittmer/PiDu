@@ -11,8 +11,8 @@ namespace PiDu.Model
         ICollection<IAlbum> Albums { get; set; }
         ICollection<ISong> Songs { get; set; }
 
-        void Load();
-        void Load(string startingDirectory);
+        Task Load();
+        Task Load(string startingDirectory);
 
         event EventHandler LibraryUpdated;
     }

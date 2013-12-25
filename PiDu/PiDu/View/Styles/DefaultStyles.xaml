@@ -1,5 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:piduView="clr-namespace:PiDu.View">
+
+    <piduView:UriToBitmapImageConverter x:Key="UriToBitmapImageConverter"/>
+    
     <Style TargetType="Grid" x:Key="ContentBackground">
         <Setter Property="Background" Value="Gray"/>
     </Style>
@@ -51,9 +55,10 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Canvas Width="80" Height="80" ClipToBounds="True">
-                        <Rectangle Width="80" Height="80" Fill="Honeydew"/>
-                        <TextBlock Text="{Binding Title}"/>
+                    <Canvas Width="80" Height="80" ClipToBounds="True" Background="Honeydew">
+                        <Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapImageConverter}}" Width="80" Height="80"/>
+                        <Rectangle />
+                        <TextBlock Text="{Binding Title}" Margin="0 40 0 0"/>
                     </Canvas>
                 </DataTemplate>
             </Setter.Value>

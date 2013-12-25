@@ -8,7 +8,7 @@ using Lastfm;
 using Lastfm.Services;
 namespace PiDu.Model
 {
-    public class MusicDataProvider : IMusicDataProvider
+    public class MusicDataProvider 
     {
         private Session _session;
 
@@ -20,7 +20,7 @@ namespace PiDu.Model
             this._session = new Session(apiKey, secret);
         }
 
-        public void GetAlbumData(IAlbum album)
+        public void GetExternalAlbumData(IAlbum album)
         {
             Lastfm.Services.Album fmalbum = new Lastfm.Services.Album("", "", this._session);
 

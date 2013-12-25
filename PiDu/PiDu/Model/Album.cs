@@ -59,6 +59,22 @@ namespace PiDu.Model
         }
         #endregion
 
+        #region ImageUrl
+        private string _imageUri;
+        public string ImageUri
+        {
+            get
+            {
+                return _imageUri;
+            }
+            set
+            {
+                _imageUri = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+
         #region ExternalMetaData
         private IDictionary<string, object> _externalMetaData;
         public IDictionary<string, object> ExternalMetaData
@@ -115,6 +131,9 @@ namespace PiDu.Model
             return this.Title.ToLower().Equals(other.Title.ToLower()) &&
                 this.Artist.ToLower().Equals(other.Artist.ToLower());
         }
+
+
+
         
     }
 }
