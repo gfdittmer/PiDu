@@ -26,7 +26,7 @@ namespace PiDu.Model
         {
             Albums = new ObservableCollection<IAlbum>();
             Songs = new ObservableCollection<ISong>();
-            MusicDataProvider = new LastFMMusicDataProvider(String.Format(@"{0}\\Cache",Properties.Settings.Default.MusicRootDirectory));
+            MusicDataProvider = new LastFMMusicDataProvider(String.Format(@"{0}\\PiDu_Cache",Properties.Settings.Default.MusicRootDirectory));
         }
 
         public async Task Load()

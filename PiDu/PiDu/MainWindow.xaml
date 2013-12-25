@@ -111,7 +111,7 @@
 
                         <!-- Album image-->
                         <Border>
-                            <Rectangle Fill="DarkGray"  Width="49" Height="49"/>
+                            <Image Source="{Binding Album.ImageUri, Converter={StaticResource UriToBitmapImageConverter}}" Width="49" Height="49"/>
                         </Border>
                         <!-- -->
                         
@@ -159,7 +159,7 @@
                 <!-- Begin playlist area -->
 
                 <Canvas>
-                    <Thumb DragDelta="Thumb_DragDelta" Template="{StaticResource playlistTemplate}" Canvas.Left="0" Canvas.Top="0"/>
+                    <Thumb DragDelta="Thumb_DragDelta" Template="{StaticResource playlistTemplate}" Canvas.Left="20" Canvas.Top="300"/>
                 </Canvas>
                 
                 <!-- End playlist area -->

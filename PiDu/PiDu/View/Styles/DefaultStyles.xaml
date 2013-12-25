@@ -58,7 +58,7 @@
                     <Canvas Width="80" Height="80" ClipToBounds="True" Background="Honeydew">
                         <Image Source="{Binding ImageUri, Converter={StaticResource UriToBitmapImageConverter}}" Width="80" Height="80"/>
                         <Rectangle />
-                        <TextBlock Text="{Binding Title}" Margin="0 40 0 0"/>
+                        <TextBlock Text="{Binding Title}" Margin="0 60 0 0"/>
                     </Canvas>
                 </DataTemplate>
             </Setter.Value>
